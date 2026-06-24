@@ -31,7 +31,6 @@ Virt_Task/tests/
 
 ```
 
----
 
 # Technology Stack
 
@@ -43,7 +42,6 @@ Virt_Task/tests/
 | Chrome Browser | Latest                                     |
 | ChromeDriver   | Managed automatically by webdriver-manager |
 
----
 
 # Prerequisites
 
@@ -53,7 +51,6 @@ Install:
 * Google Chrome Browser
 * Gmail Account with App Password enabled
 
----
 
 # Installation
 

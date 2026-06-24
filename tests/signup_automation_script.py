@@ -721,9 +721,6 @@ def test_36_select_institution_types(driver):
     print(f" All {len(institution_types)} institution types selected.")
 
 def test_37_fill_certification_details(driver):
-    print("\n[TEST 37] Filling Certification Details...")
-    # name="certification_details" — optional field, plain text input
-    # Confirmed placeholder: "E.g., ICEF Certified Education Agent"
     try:
         field = wait_visible(driver, By.NAME, "certification_details", timeout=10)
         field.clear()
@@ -744,28 +741,14 @@ def test_37_fill_certification_details(driver):
         print(f" Certification Details (fallback): {val}")
 
 def test_38_upload_business_documents(driver):
-    """
-    Upload Business Documents — two upload zones side by side.
-    Each zone wraps a hidden <input type="file">. Strategy:
-      1. Find all hidden file inputs inside the upload containers.
-      2. Make each visible via JS (remove display:none / pointer-events).
-      3. Send the file path using send_keys (no dialog needed).
-    Two dummy temp files are created for this test run.
-    """
-    print("\n[TEST 38] Uploading Business Documents...")
 
-    # Create two dummy files to upload
     file1 = create_dummy_file(suffix=".pdf",
                               content=b"Company Registration Document - Test")
     file2 = create_dummy_file(suffix=".pdf",
                               content=b"Educational Certificate - Test")
     TEST_VERIFICATION["document_1"] = file1
     TEST_VERIFICATION["document_2"] = file2
-    print(f" File 1: {file1}")
-    print(f" File 2: {file2}")
 
-    # Locate upload zone containers — identified by the upload icon SVG + "Upload a file" text
-    # Each zone is a labeled drop area; the hidden <input type="file"> sits inside or nearby
     upload_zones = WebDriverWait(driver, 15).until(
         EC.presence_of_all_elements_located((By.XPATH,
             "//div[contains(@class,'flex') and "
@@ -782,10 +765,8 @@ def test_38_upload_business_documents(driver):
     for idx, (zone, file_path) in enumerate(zip(upload_zones[:2], files_to_upload), start=1):
         print(f" Uploading file {idx}: {os.path.basename(file_path)}")
 
-        # Strategy 1: find <input type="file"> inside the zone's parent container
         file_input = None
         try:
-            # Walk up to the clickable card container, then find input[type=file] within it
             card = zone.find_element(By.XPATH,
                 "./ancestor::div[contains(@class,'border') or "
                 "contains(@class,'rounded')][1]"
@@ -811,7 +792,6 @@ def test_38_upload_business_documents(driver):
                 "Check screenshot: step4_before_upload.png"
             )
 
-        # Make the input interactable (remove hidden/opacity styles)
         driver.execute_script("""
             arguments[0].style.display    = 'block';
             arguments[0].style.opacity    = '1';
